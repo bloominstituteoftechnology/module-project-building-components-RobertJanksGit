@@ -2,8 +2,15 @@ function moduleProject3() {
   // 👉 TASK 1 - Write a `buildNav` component that returns a nav
 
   function buildNav(links) {
-    //  ✨ do your magic here
-    return document.createElement("nav");
+    const nav = document.createElement("nav");
+    links.forEach((link) => {
+      const anchorTag = document.createElement("a");
+      anchorTag.href = link.href;
+      anchorTag.title = link.title;
+      anchorTag.textContent = link.textContent;
+      nav.appendChild(anchorTag);
+    });
+    return nav;
   }
 
   // ❗ DOM creation using your `buildNav` component (do not change):
@@ -40,7 +47,32 @@ function moduleProject3() {
   // 👉 TASK 2A - Write a `buildLearnerCard` component that returns a card
 
   function buildLearnerCard(learner, languages) {
-    //  ✨ do your magic here
+    const div = document.createElement("div");
+    div.classList.add("learner-card");
+    const learnerName = document.createElement("p");
+    const learnerId = document.createElement("p");
+    const learnerDOB = document.createElement("p");
+    const learnerFavLang = document.createElement("p");
+
+    const favLang = languages.filter((lang) => lang.id === learner.favLanguage);
+
+    learnerName.textContent = learner.fullName;
+    learnerId.textContent = `Learner ID: ${learner.id}`;
+    learnerDOB.textContent = `Date of Birth: ${learner.dateOfBirth}`;
+    learnerFavLang.textContent = `Favorite Language: ${favLang[0].name}`;
+
+    div.appendChild(learnerName);
+    div.appendChild(learnerId);
+    div.appendChild(learnerDOB);
+    div.appendChild(learnerFavLang);
+
+    div.addEventListener("click", (event) => {
+      const childrenArray = Array.from(div.parentElement.children);
+      childrenArray.forEach((child) => child.classList.remove("active"));
+      div.classList.add("active");
+      event.stopPropagation();
+    });
+    return div;
   }
 
   {
@@ -85,14 +117,65 @@ function moduleProject3() {
         favLanguage: 12,
       },
     ];
-    //  ✨ do your magic here
+    learners.forEach((learner) => {
+      const learnerCard = buildLearnerCard(learner, languages);
+      document.querySelector("section").appendChild(learnerCard);
+    });
   }
 
   // 👉 TASK 3 - Write a `buildFooter` component that returns a footer
 
   function buildFooter(footerData) {
-    //  ✨ do your magic here
-    return document.createElement("footer");
+    const footer = document.createElement("footer");
+
+    const company = document.createElement("div");
+    const name = document.createElement("p");
+    const address = document.createElement("p");
+    const email = document.createElement("p");
+    const mailtoLink = document.createElement("a");
+
+    const social = document.createElement("div");
+    const twitter = document.createElement("a");
+    const facebook = document.createElement("a");
+    const instagram = document.createElement("a");
+
+    const copyright = document.createElement("div");
+
+    socialData = footerData.socialMedia;
+
+    company.classList.add("company-info");
+    name.classList.add("company-name");
+    address.classList.add("address");
+    email.classList.add("contact-email");
+    social.classList.add("social-media");
+    twitter.href = socialData.twitter;
+    facebook.href = socialData.facebook;
+    instagram.href = socialData.instagram;
+    mailtoLink.href = "mailto:info@example.com";
+
+    mailtoLink.textContent = footerData.contactEmail;
+    console.log(mailtoLink);
+    name.textContent = footerData.companyName;
+    address.textContent = footerData.address;
+    email.innerHTML = `Email: <a href="${mailtoLink}">info@example.com</a>`;
+    twitter.textContent = "Twitter";
+    facebook.textContent = "Facebook";
+    instagram.textContent = "Instagram";
+    copyright.textContent = `© ${footerData.companyName.toUpperCase()} 2024`;
+
+    footer.appendChild(company);
+    company.appendChild(name);
+    company.appendChild(address);
+    company.appendChild(email);
+
+    footer.appendChild(social);
+    social.appendChild(twitter);
+    social.appendChild(facebook);
+    social.appendChild(instagram);
+
+    footer.appendChild(copyright);
+
+    return footer;
   }
 
   // ❗ DOM creation using your `buildFooter` component (do not change):
@@ -111,7 +194,13 @@ function moduleProject3() {
 
   // 👉 TASK 4 - Clicking on the section should deactivate the active card
 
-  //  ✨ do your magic here
+  const mainSection = document.querySelector("section");
+  mainSection.addEventListener("click", () => {
+    const childArray = Array.from(mainSection.children);
+    childArray.forEach((child) => {
+      child.classList.remove("active");
+    });
+  });
 }
 
 // ❗ DO NOT CHANGE THIS CODE
